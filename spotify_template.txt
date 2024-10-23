@@ -37,41 +37,6 @@ Rules:
 4. Don't include parameters unless they directly relate to the description
 5. The dictionary must be valid JSON.
 
-EXAMPLE INPUT:
-DESCRIPTION: 
-1. A constant, smooth hum that reflects the steady drone of my engines and the unwavering nature of my flight path.
-2. High, thin tones that capture the rarified atmosphere surrounding me at this altitude.
-3. Subtle, cyclical variations in pitch and volume mirroring the minor adjustments and turbulence experienced during flight.
-4. A deep, underlying bass frequency representing the immense power contained within my fuel tanks and engines.
-5. Ethereal, shimmering textures that evoke the starlight and moonlight visible from my lofty vantage point.
-6. Rhythmic pulses that align with the rotation of my turbines and the beating of my hydraulic systems.
-7. Occasional moments of near-silence, broken by gentle swells of sound, like passing through pockets of still air.
-8. A sense of vast space in the music, with sounds seeming to echo across great distances, mirroring my isolation above the ocean.
-9. Smooth transitions between tonal areas, reflecting the gradual changes in temperature and air pressure as I cruise.
-10. An overall sense of forward motion in the music, constant yet unhurried, matching my steady progress through the night sky.
-
-EXAMPLE OUTPUT:
-{{
-    "target_acousticness": 0.3,
-    "target_danceability": 0.4,
-    "target_duration_ms": 360000,
-    "min_duration_ms": 240000,
-    "target_energy": 0.6,
-    "min_energy": 0.4,
-    "max_energy": 0.7,
-    "target_instrumentalness": 0.9,
-    "min_instrumentalness": 0.7,
-    "target_loudness": -14,
-    "min_loudness": -20,
-    "max_loudness": -8,
-    "target_speechiness": 0.05,
-    "max_speechiness": 0.1,
-    "target_tempo": 110,
-    "min_tempo": 90,
-    "max_tempo": 125,
-    "target_valence": 0.5,
-    "seed_genres": ["ambient", "electronic", "minimal-techno"]
-}}
 ---
 DESCRIPTION: {description}
 

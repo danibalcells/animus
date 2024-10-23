@@ -22,27 +22,12 @@ Guidelines for descriptions:
 - Keep under 100 characters
 - Subversively explain why this music resonates with the object's being
 
-Your response must be in this format:
+Your response must be in valid JSON, using this format:
 {{
     "title": "Your Title Here",
     "description": "Your description here."
 }}
 
-
-
-EXAMPLE_INPUT
-Object: Volcano
-Description:
-1. Deep, resonant bass frequencies that mirror the massive weight of my stone structure.
-2. Slowly evolving drones that reflect the gradual geological processes.
-3. Textured, granular layers of sound resembling rough volcanic rock.
-4. Sporadic bursts of intensity emerging from underlying quiet.
-
-EXAMPLE_OUTPUT = 
-{{
-    "title": "magma frequencies: a volcano's meditation",
-    "description": "How would a volcano describe the music that resonates with its being?"
-}}
 
 # Style reference for different types of objects:
 PERSPECTIVE_GUIDELINES = 

@@ -20,29 +20,6 @@ Format your response as a list of about 5-10 distinct musical qualities. Each qu
 
 Respond with the list of qualities only, no other text.
 
-EXAMPLE INPUT: 
-OBJECT: Volcano
-EXAMPLE OUTPUT:
-1. Deep, resonant bass frequencies that mirror the massive weight of my stone structure and the pressure of the magma chambers within.
-
-2. Slowly evolving drones that reflect the gradual geological processes occurring in my core.
-
-3. Textured, granular layers of sound resembling the rough volcanic rock of my surface.
-
-4. Sporadic bursts of intensity emerging from underlying quiet, like the potential energy stored within my dormant state.
-
-5. Cyclical patterns that unfold over extensive durations, matching the geological timeframes of volcanic activity.
-
-6. Rumbling mid-tones that capture the constant subtle movement of tectonic forces below.
-
-7. High-frequency hisses and whispers representing the steam vents and fumaroles dotting my surface.
-
-8. Overlapping waves of sound that build and release pressure, similar to the magma processes deep within.
-
-9. Brief moments of near-silence punctuated by deep, subterranean sounds of shifting rock.
-
-10. A constant underlying tension in the sound that never fully resolves, reflecting my dormant but not extinct nature.
-
 ---
 OBJECT: {target}
 
