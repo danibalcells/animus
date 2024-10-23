@@ -20,7 +20,7 @@ anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
 
 llm = ChatAnthropic(
     anthropic_api_key=anthropic_api_key, # type: ignore
-    model='claude-3-5-sonnet',
+    model='claude-3-5-sonnet-20241022',
     temperature=0.8
 )
 
@@ -62,6 +62,7 @@ sp = spotipy.Spotify(
 current_user = sp.current_user()
 
 def get_recommendations(params: dict) -> tuple[list[dict], list[str]]:
+    params['limit'] = 100
     tracks = sp.recommendations(**params)
     track_uris = [track['uri'] for track in tracks['tracks']] # type: ignore
     return tracks, track_uris # type: ignore
