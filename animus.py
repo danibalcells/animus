@@ -20,7 +20,8 @@ anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
 
 llm = ChatAnthropic(
     anthropic_api_key=anthropic_api_key, # type: ignore
-    model='claude-3-5-sonnet-20240620'
+    model='claude-3-5-sonnet',
+    temperature=0.8
 )
 
 animistic_template = load_template('animistic_template.txt', input_variables=['target'])
@@ -29,11 +30,11 @@ animistic_chain = animistic_template | llm
 def generate_animistic_description(target: str) -> str:
     return animistic_chain.invoke({'target': target}).content # type: ignore
 
-spotify_template = load_template('spotify_template.txt', input_variables=['description'])
+spotify_template = load_template('spotify_template.txt', input_variables=['target', 'description'])
 spotify_chain = spotify_template | llm | JsonOutputParser()
 
-def generate_spotify_parameters(description: str) -> dict:
-    return spotify_chain.invoke({'description': description}) # type: ignore
+def generate_spotify_parameters(target: str, description: str) -> dict:
+    return spotify_chain.invoke({'target': target, 'description': description}) # type: ignore
 
 title_template = load_template('title_template.txt', input_variables=['target', 'description'])
 title_chain = title_template | llm | JsonOutputParser()
@@ -76,7 +77,7 @@ if __name__ == '__main__':
     target = input('Enter a target: ')
     animistic_description = generate_animistic_description(target)
     print(animistic_description)
-    spotify_params = generate_spotify_parameters(animistic_description)
+    spotify_params = generate_spotify_parameters(target, animistic_description)
     print(spotify_params)
     title, description = generate_title(target, animistic_description)
     print(title)
