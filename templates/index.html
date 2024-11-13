@@ -1,28 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://accounts.spotify.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.spotify.com; style-src 'self' 'unsafe-inline' https://accounts.spotify.com; img-src 'self' data: https://accounts.spotify.com; frame-src 'self' https://accounts.spotify.com; connect-src 'self' https://accounts.spotify.com;">
-    <meta http-equiv="Referrer-Policy" content="no-referrer-when-downgrade">
-    <title>Animus - Spotify Playlist Generator</title>
+    <title>animus</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Animus</h1>
-        <p class="subtitle">Generate personalized Spotify playlists using AI</p>
+        <div class="dictionary-header">
+            <h1>animus</h1>
+            <p class="phonetic">/ˈanəməs/</p>
+            <p class="part-of-speech">noun</p>
+            <p class="definition">
+                the attribution of musical taste to plants, inanimate objects, and forgotten things;
+                <br>
+                the belief that everything has its own playlist
+            </p>
+        </div>
+        
+        <p class="explanation">
+            every object has its own mixtape.
+            <br>
+            {{ random_pun }}
+            <br>
+            what else is out there?
+            let's find out.
+        </p>
+        
         {% if error %}
         <p class="error">{{ error }}</p>
         {% endif %}
-        <div class="cta-container">
-            <a href="{{ url_for('login') }}" class="button">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02z"/>
-                </svg>
-                Login with Spotify
-            </a>
-        </div>
+        
+        <a href="{{ url_for('login') }}" class="spotify-button">connect with spotify</a>
     </div>
+    <script src="{{ url_for('static', filename='animation.js') }}"></script>
 </body>
 </html> 

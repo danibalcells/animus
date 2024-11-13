@@ -1,10 +1,13 @@
 :root {
     --spotify-green: #1DB954;
     --spotify-green-hover: #1ed760;
-    --background: #121212;
-    --surface: #282828;
+    --background: #0a0a0a;
+    --surface: #1a1a1a;
     --text: #FFFFFF;
     --text-secondary: #B3B3B3;
+    --purple-glow: #4a1155;
+    --purple-accent: #6b1b7b;
+    --purple-highlight: #8f23a6;
 }
 
 * {
@@ -21,14 +24,14 @@ body {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
 .container {
+    width: 100%;
     max-width: 600px;
     margin: 0 auto;
     padding: 40px 20px;
-    text-align: center;
+    text-align: left;
 }
 
 h1 {
@@ -40,15 +43,17 @@ h1 {
 
 .subtitle {
     color: var(--text-secondary);
-    font-size: 1.125rem;
-    margin-bottom: 2rem;
+    font-size: 1.4rem;
+    margin-bottom: 3rem;
+    line-height: 1.4;
 }
 
-.button {
-    display: inline-flex;
+.spotify-button {
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: var(--spotify-green);
+    justify-content: center;
+    width: 100%;
+    background: var(--purple-accent);
     color: var(--text);
     padding: 1rem 2rem;
     border-radius: 500px;
@@ -58,11 +63,21 @@ h1 {
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-align: center;
 }
 
-.button:hover {
-    background: var(--spotify-green-hover);
+.spotify-button:hover {
+    background: var(--purple-highlight);
     transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(74, 17, 85, 0.5);
+}
+
+.spotify-button:disabled {
+    background: var(--purple-accent);
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .button.secondary {
@@ -79,35 +94,54 @@ h1 {
 }
 
 .generate-form {
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.input-group {
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
 input[type="text"] {
     width: 100%;
-    padding: 1rem;
-    border: none;
-    border-radius: 4px;
-    background: var(--surface);
+    padding: 1.2rem;
+    background: rgba(74, 17, 85, 0.2);
+    border: 2px solid rgba(107, 27, 123, 0.3);
+    border-radius: 12px;
+    font-size: 1.2rem;
     color: var(--text);
-    font-size: 1rem;
     transition: all 0.3s ease;
 }
 
 input[type="text"]:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--spotify-green);
+    border-color: var(--purple-highlight);
+    background: rgba(74, 17, 85, 0.3);
+}
+
+input[type="text"]::placeholder {
+    color: var(--text-secondary);
+}
+
+.logout-link {
+    display: block;
+    margin-top: 3rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.logout-link:hover {
+    color: var(--purple-highlight);
+    opacity: 1;
 }
 
 .button-group {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    width: 100%;
 }
 
 @media (max-width: 480px) {
@@ -123,12 +157,84 @@ input[type="text"]:focus {
         width: 100%;
         justify-content: center;
     }
+} 
+
+.dictionary-header {
+    text-align: left;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid rgba(107, 27, 123, 0.3);
+    padding-bottom: 2rem;
 }
 
-.error {
-    color: #ff4444;
-    background: rgba(255, 68, 68, 0.1);
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
+.dictionary-header h1 {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #4a1155, #8f23a6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+}
+
+.phonetic {
+    font-family: monospace;
+    color: var(--purple-accent);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.part-of-speech {
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.definition {
+    color: var(--text);
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-weight: 300;
+}
+
+.explanation {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    text-align: left;
+}
+
+.explanation em {
+    color: var(--purple-highlight);
+    font-style: normal;
+    display: block;
+    margin: 1rem 0;
+}
+
+.result-header {
+    text-align: left;
+    margin-bottom: 3rem;
+}
+
+.result-header h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #4a1155, #8f23a6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    line-height: 1.1;
+}
+
+.spotify-button.secondary {
+    background: rgba(107, 27, 123, 0.2);
+    border: 2px solid rgba(107, 27, 123, 0.3);
+}
+
+.spotify-button.secondary:hover {
+    background: rgba(107, 27, 123, 0.3);
+    border-color: var(--purple-highlight);
 } 

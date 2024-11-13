@@ -22,16 +22,18 @@ Guidelines for titles:
 Guidelines for descriptions:
 - Keep under 100 characters
 - Subversively explain why this music resonates with the object's being
+- Be witty and cheeky, never cheesy
 - Write in the third person
 - Finish your description with a period.
 
 Guidelines in general:
 - Write the title and description in the language used to refer to the target object, not necessarily in the language of the provided description.
+- Write both title and description in lowercase, informality is key.
 
 Your response must be in valid JSON, using this format:
 {{
-    "title": "Your Title Here",
-    "description": "Your description here."
+    "title": "your title here",
+    "description": "your description here."
 }}
 
 TARGET OBJECT: {target}

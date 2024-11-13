@@ -1,29 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Playlist - Animus</title>
+    <title>your playlist | animus</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Your Playlist is Ready!</h1>
-        <p class="subtitle">Your AI-generated playlist has been created on Spotify</p>
+        <div class="result-header">
+            <h1>{{ title }}</h1>
+            <p class="subtitle">{{ description }}</p>
+        </div>
+
         <div class="button-group">
-            <a href="{{ playlist_url }}" class="button primary" target="_blank">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02z"/>
-                </svg>
-                Open in Spotify
+            <a href="{{ playlist_url }}" class="spotify-button" target="_blank">
+                open in spotify
             </a>
-            <a href="{{ url_for('generate') }}" class="button secondary">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
-                </svg>
-                Generate Another
+            <a href="{{ url_for('generate') }}" class="spotify-button secondary">
+                animate another
             </a>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='animation.js') }}"></script>
 </body>
 </html> 

@@ -56,8 +56,8 @@ title_chain = title_template | llm | JsonOutputParser()
 
 def generate_title(target: str, aspects: str, playlist_description: str) -> tuple[str, str]:
     response = title_chain.invoke({'target': target, 'aspects': aspects, 'description': playlist_description}) # type: ignore
-    title = f"Animus: {response['title']}"
-    playlist_description = response['description'] + " Made with Animus."
+    title = f"animus: {response['title']}"
+    playlist_description = response['description']
     return title, playlist_description
 
 client_id = os.getenv('SPOTIPY_CLIENT_ID')
@@ -93,6 +93,7 @@ def get_recommendations(params: dict, spotify_token: str) -> tuple[list[dict], l
         
     sp = spotipy.Spotify(auth=spotify_token)
     params['limit'] = 100
+    params['market'] = 'US'
     try:
         response = sp.recommendations(**params)
         if not response or 'tracks' not in response:

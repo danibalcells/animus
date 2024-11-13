@@ -15,6 +15,7 @@ from animus import (
 import logging
 import secrets
 from urllib.parse import quote
+import random
 
 # Load environment variables
 load_dotenv('local.env')
@@ -34,6 +35,10 @@ SPOTIFY_SCOPES = "playlist-modify-public"
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+# Load puns from file
+with open('puns.txt', 'r') as f:
+    PUNS = [line.strip() for line in f.readlines()]
 
 def create_spotify_oauth() -> SpotifyOAuth:
     return SpotifyOAuth(
@@ -60,13 +65,16 @@ def index():
     # Clear any existing session data (like previous logins)
     session.clear()
     
-    # Render the index.html template
-    response = make_response(render_template('index.html'))
+    # Get a random pun
+    random_pun = random.choice(PUNS)
     
-    # Add Content Security Policy headers to allow Spotify's scripts
+    # Render the index.html template with the random pun
+    response = make_response(render_template('index.html', random_pun=random_pun))
+    
+    # Add Content Security Policy headers
     response.headers['Content-Security-Policy'] = (
         "default-src 'self' https://accounts.spotify.com; "
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.spotify.com; "
+        "script-src 'self' https://accounts.spotify.com; "
         "style-src 'self' 'unsafe-inline' https://accounts.spotify.com; "
         "img-src 'self' data: https://accounts.spotify.com; "
         "frame-src 'self' https://accounts.spotify.com; "
@@ -166,12 +174,23 @@ def generate():
             spotify_params = generate_spotify_parameters(playlist_description)
             title, description = generate_title(target, aspects_description, playlist_description)
             tracks, track_uris = get_recommendations(spotify_params, spotify_token)
-            playlist_url = create_playlist(title, description, track_uris, spotify_token)
+            
+            # Add target to Spotify description but not display description
+            spotify_description = f"{description} made with animus for {target}."
+            display_description = description.split('made with animus')[0]
+            
+            playlist_url = create_playlist(title, spotify_description, track_uris, spotify_token)
             
             if not playlist_url:
                 raise Exception("Failed to create playlist")
+            
+            # Clean up the title
+            clean_title = title.replace('animus: ', '')
                 
-            return render_template('result.html', playlist_url=playlist_url)
+            return render_template('result.html', 
+                                playlist_url=playlist_url,
+                                title=clean_title,
+                                description=display_description)
         except Exception as e:
             logger.error(f"Error generating playlist: {str(e)}")
             return render_template('generate.html', error="Failed to generate playlist. Please try again.")
