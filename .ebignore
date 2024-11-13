@@ -1,0 +1,20 @@
+# Include these files
+!app.py
+!animus.py
+!requirements.txt
+!templates/
+!static/
+!puns.txt
+!generation_ideas.txt
+!title_template.txt
+!description_template.txt
+!spotify_template.txt
+
+# Exclude these
+.git
+.env
+local.env
+__pycache__/
+*.pyc
+.DS_Store
+.elasticbeanstalk/* 

@@ -22,7 +22,12 @@
         {% endif %}
 
         <form method="POST" class="generate-form" id="generateForm">
-            <input type="text" name="target" placeholder="describe your object..." required>
+            <input type="text" 
+                   id="target" 
+                   name="target" 
+                   required 
+                   placeholder="{{ placeholder }}"
+                   class="input-field">
             <button type="submit" class="spotify-button" id="submitButton">animate</button>
         </form>
         

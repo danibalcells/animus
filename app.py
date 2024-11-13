@@ -17,19 +17,18 @@ import secrets
 from urllib.parse import quote
 import random
 
-# Load environment variables
-load_dotenv('local.env')
+load_dotenv()
 
-# Verify environment variables
 client_id = os.getenv('SPOTIPY_CLIENT_ID')
 client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')
-redirect_uri = 'http://127.0.0.1:5000/callback'  # Hardcode this instead of using env var
+is_production = os.getenv('FLASK_ENV') == 'production'
+redirect_uri = os.getenv('REDIRECT_URI', 'http://127.0.0.1:5000/callback' if not is_production else 'https://yourdomain.com/callback')
 
 if not client_id or not client_secret:
     raise ValueError("Missing Spotify credentials in environment variables")
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
 
 SPOTIFY_SCOPES = "playlist-modify-public"
 
@@ -39,6 +38,10 @@ logger = logging.getLogger(__name__)
 # Load puns from file
 with open('puns.txt', 'r') as f:
     PUNS = [line.strip() for line in f.readlines()]
+
+# Load generation ideas
+with open('generation_ideas.txt', 'r') as f:
+    GENERATION_IDEAS = [line.strip() for line in f.readlines()]
 
 def create_spotify_oauth() -> SpotifyOAuth:
     return SpotifyOAuth(
@@ -195,7 +198,9 @@ def generate():
             logger.error(f"Error generating playlist: {str(e)}")
             return render_template('generate.html', error="Failed to generate playlist. Please try again.")
     
-    return render_template('generate.html')
+    # Add random idea for GET request
+    random_idea = random.choice(GENERATION_IDEAS)
+    return render_template('generate.html', placeholder=random_idea)
 
 @app.route('/logout')
 def logout():
