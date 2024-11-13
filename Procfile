@@ -1,1 +1,1 @@
-web: gunicorn --pid /var/run/web.pid --bind :8080 app:app --access-logfile - --error-logfile - 
+web: gunicorn app:app --workers=3 --timeout=60

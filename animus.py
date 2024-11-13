@@ -10,6 +10,7 @@ from langchain_core.output_parsers import JsonOutputParser
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
+logger = logging.getLogger(__name__)
 
 def load_template(template_path: str, input_variables: list[str]) -> PromptTemplate:
     with open(template_path, 'r') as file:
@@ -17,7 +18,9 @@ def load_template(template_path: str, input_variables: list[str]) -> PromptTempl
     return PromptTemplate(template=template_string, input_variables=input_variables)
 
 
-load_dotenv('local.env')
+if os.getenv('FLASK_ENV') != 'production':
+    load_dotenv('local.env')
+
 anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
 
 llm = ChatAnthropic(
@@ -60,23 +63,16 @@ def generate_title(target: str, aspects: str, playlist_description: str) -> tupl
     playlist_description = response['description']
     return title, playlist_description
 
-client_id = os.getenv('SPOTIPY_CLIENT_ID')
-client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')
-redirect_uri = os.getenv('SPOTIPY_REDIRECT_URI')
+def load_banned_artists() -> pd.DataFrame:
+    try:
+        file_path = os.path.join(os.path.dirname(__file__), 'banned_artists.txt')
+        logger.info(f"Loading banned artists from {file_path}")
+        return pd.read_csv(file_path)
+    except Exception as e:
+        logger.error(f"Failed to load banned artists: {e}")
+        return pd.DataFrame(columns=['uri'])
 
-sp = spotipy.Spotify(
-    auth_manager=SpotifyOAuth(
-        scope="playlist-modify-public",
-        client_id=client_id,
-        client_secret=client_secret,
-        redirect_uri=redirect_uri,
-        cache_path='cache.json',
-    )
-)
-
-current_user = sp.current_user()
-
-banned_artists = pd.read_csv('banned_artists.txt')
+banned_artists = load_banned_artists()
 
 def is_banned_artist(artist_uri: str) -> bool:
     return artist_uri in banned_artists['uri'].values
@@ -84,7 +80,6 @@ def is_banned_artist(artist_uri: str) -> bool:
 def filter_banned_artists(tracks: list[dict]) -> list[dict]:
     return [track for track in tracks if not is_banned_artist(track['artists'][0]['uri'])]
 
-logger = logging.getLogger(__name__)
 
 def get_recommendations(params: dict, spotify_token: str) -> tuple[list[dict], list[str]]:
     if not spotify_token:
@@ -142,8 +137,6 @@ def create_playlist(title: str, description: str, track_uris: list[str], spotify
 
 if __name__ == '__main__':
     target = input('Enter a target: ')
-    # animistic_description = generate_animistic_description(target)
-    # print(animistic_description)
     aspects_description = generate_aspects_description(target)
     print(aspects_description)
     playlist_description = generate_playlist_description(target, aspects_description)
@@ -153,6 +146,18 @@ if __name__ == '__main__':
     title, description = generate_title(target, aspects_description, playlist_description)
     print(title)
     print(description)
-    tracks, track_uris = get_recommendations(spotify_params, spotify_token)
-    playlist_url = create_playlist(title, description, track_uris, spotify_token)
-    print(playlist_url)
+    
+    sp_oauth = SpotifyOAuth(
+        client_id=os.getenv('SPOTIPY_CLIENT_ID'),
+        client_secret=os.getenv('SPOTIPY_CLIENT_SECRET'),
+        redirect_uri=os.getenv('REDIRECT_URI', 'http://localhost:5000/callback'),
+        scope="playlist-modify-public"
+    )
+    token_info = sp_oauth.get_cached_token()
+    if token_info:
+        spotify_token = token_info['access_token']
+        tracks, track_uris = get_recommendations(spotify_params, spotify_token)
+        playlist_url = create_playlist(title, description, track_uris, spotify_token)
+        print(playlist_url)
+    else:
+        print("No Spotify token available. Please authenticate first.")

@@ -17,12 +17,14 @@ import secrets
 from urllib.parse import quote
 import random
 
-load_dotenv()
+if os.getenv('FLASK_ENV') != 'production':
+    load_dotenv()
 
 client_id = os.getenv('SPOTIPY_CLIENT_ID')
 client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')
 is_production = os.getenv('FLASK_ENV') == 'production'
-redirect_uri = os.getenv('REDIRECT_URI', 'http://127.0.0.1:5000/callback' if not is_production else 'https://yourdomain.com/callback')
+redirect_uri = os.getenv('REDIRECT_URI', 'http://localhost:5000/callback')
+print(redirect_uri)
 
 if not client_id or not client_secret:
     raise ValueError("Missing Spotify credentials in environment variables")
@@ -41,13 +43,21 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def safe_load_file(filename: str, default_content: list[str]) -> list[str]:
+    try:
+        file_path = os.path.join(os.path.dirname(__file__), filename)
+        logger.info(f"Attempting to load {file_path}")
+        with open(file_path, 'r') as f:
+            return [line.strip() for line in f.readlines()]
+    except Exception as e:
+        logger.error(f"Failed to load {filename}: {e}")
+        return default_content
+
 # Load puns from file
-with open('puns.txt', 'r') as f:
-    PUNS = [line.strip() for line in f.readlines()]
+PUNS = safe_load_file('puns.txt', ["Why did the playlist go to the doctor? It needed better tunes!"])
 
 # Load generation ideas
-with open('generation_ideas.txt', 'r') as f:
-    GENERATION_IDEAS = [line.strip() for line in f.readlines()]
+GENERATION_IDEAS = safe_load_file('generation_ideas.txt', ["Try: a cozy rainy afternoon"])
 
 def create_spotify_oauth() -> SpotifyOAuth:
     return SpotifyOAuth(
@@ -219,4 +229,4 @@ if __name__ != '__main__':
     app.logger.setLevel(gunicorn_logger.level)
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001)
