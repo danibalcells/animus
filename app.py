@@ -32,7 +32,13 @@ app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
 
 SPOTIFY_SCOPES = "playlist-modify-public"
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(levelname)s: %(message)s',
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
 logger = logging.getLogger(__name__)
 
 # Load puns from file
@@ -206,6 +212,11 @@ def generate():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+if __name__ != '__main__':
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
