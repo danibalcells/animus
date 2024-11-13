@@ -17,10 +17,16 @@ Guidelines for titles:
 - Don't use emojis or special characters
 - Can be poetic but should be easily understood
 - Should hint at both the object's nature and the music style
+- Do not finish the title with a period.
 
 Guidelines for descriptions:
 - Keep under 100 characters
 - Subversively explain why this music resonates with the object's being
+- Write in the third person
+- Finish your description with a period.
+
+Guidelines in general:
+- Write the title and description in the language used to refer to the target object, not necessarily in the language of the provided description.
 
 Your response must be in valid JSON, using this format:
 {{
@@ -28,46 +34,5 @@ Your response must be in valid JSON, using this format:
     "description": "Your description here."
 }}
 
-
-# Style reference for different types of objects:
-PERSPECTIVE_GUIDELINES = 
-MECHANICAL OBJECTS:
-- Emphasize rhythm, precision, purpose
-- Reference operational states
-- Connect to human interaction
-Example: "These rhythms flow through my circuits, matching the steady pulse of my daily operations."
-
-NATURAL OBJECTS:
-- Focus on organic processes
-- Reference cycles and seasons
-- Connect to environmental forces
-Example: "My roots resonate with these deep bass frequencies, echoing the underground streams that sustain me."
-
-ARCHITECTURAL OBJECTS:
-- Emphasize stability and presence
-- Reference human activity within/around
-- Connect to urban/spatial context
-Example: "The steady drone mirrors my constant vigil over the city streets below."
-
-VEHICULAR OBJECTS:
-- Focus on movement and journey
-- Reference speed and direction
-- Connect to traversed environments
-Example: "These tracks match my velocity as I slice through wind and weather."
-
-CELESTIAL OBJECTS:
-- Emphasize scale and cycles
-- Reference light and darkness
-- Connect to cosmic forces
-Example: "My orbital dance inspires these celestial harmonies."
-
-AQUATIC OBJECTS:
-- Focus on flow and fluidity
-- Reference depth and pressure
-- Connect to water's properties
-Example: "These rhythms match my tidal exchanges with the shore.
-
-INPUT OBJECT: {target}
-DESCRIPTION: {description}
-
-OUTPUT:
+TARGET OBJECT: {target}
+OBJECT DESCRIPTION: {description}

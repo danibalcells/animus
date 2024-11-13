@@ -1,0 +1,2 @@
+uri,name
+spotify:artist:3a2nWOxBfUuve8TpfQicdY,Pet Music World

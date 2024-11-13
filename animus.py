@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 from langchain_anthropic import ChatAnthropic
 from langchain.prompts import PromptTemplate
@@ -30,11 +31,17 @@ animistic_chain = animistic_template | llm
 def generate_animistic_description(target: str) -> str:
     return animistic_chain.invoke({'target': target}).content # type: ignore
 
+aspects_template = load_template('aspects_template.txt', input_variables=['target'])
+aspects_chain = aspects_template | llm
+
+def generate_aspects_description(target: str) -> str:
+    return aspects_chain.invoke({'target': target}).content # type: ignore
+
 spotify_template = load_template('spotify_template.txt', input_variables=['target', 'description'])
 spotify_chain = spotify_template | llm | JsonOutputParser()
 
 def generate_spotify_parameters(target: str, description: str) -> dict:
-    return spotify_chain.invoke({'target': target, 'description': description}) # type: ignore
+    return spotify_chain.invoke({'target': target, 'description': description}, model_kwargs={'temperature': 0.2}) # type: ignore
 
 title_template = load_template('title_template.txt', input_variables=['target', 'description'])
 title_chain = title_template | llm | JsonOutputParser()
@@ -61,10 +68,19 @@ sp = spotipy.Spotify(
 
 current_user = sp.current_user()
 
+banned_artists = pd.read_csv('banned_artists.txt')
+
+def is_banned_artist(artist_uri: str) -> bool:
+    return artist_uri in banned_artists['uri'].values
+
+def filter_banned_artists(tracks: list[dict]) -> list[dict]:
+    return [track for track in tracks if not is_banned_artist(track['artists'][0]['uri'])]
+
 def get_recommendations(params: dict) -> tuple[list[dict], list[str]]:
     params['limit'] = 100
     tracks = sp.recommendations(**params)
-    track_uris = [track['uri'] for track in tracks['tracks']] # type: ignore
+    tracks = filter_banned_artists(tracks['tracks']) # type: ignore
+    track_uris = [track['uri'] for track in tracks] # type: ignore
     return tracks, track_uris # type: ignore
 
 def create_playlist(title: str, description: str, track_uris: list[str]) -> str:
@@ -76,11 +92,13 @@ def create_playlist(title: str, description: str, track_uris: list[str]) -> str:
 
 if __name__ == '__main__':
     target = input('Enter a target: ')
-    animistic_description = generate_animistic_description(target)
-    print(animistic_description)
-    spotify_params = generate_spotify_parameters(target, animistic_description)
+    # animistic_description = generate_animistic_description(target)
+    # print(animistic_description)
+    aspects_description = generate_aspects_description(target)
+    print(aspects_description)
+    spotify_params = generate_spotify_parameters(target, aspects_description)
     print(spotify_params)
-    title, description = generate_title(target, animistic_description)
+    title, description = generate_title(target, aspects_description)
     print(title)
     print(description)
     tracks, track_uris = get_recommendations(spotify_params)
