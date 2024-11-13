@@ -35,4 +35,5 @@ Your response must be in valid JSON, using this format:
 }}
 
 TARGET OBJECT: {target}
-OBJECT DESCRIPTION: {description}
+DESCRIPTION OF THE MUSICAL ASPECTS USED TO GENERATE THIS PLAYLIST: {aspects}
+PLAYLIST DESCRIPTION: {description}

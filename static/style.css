@@ -1,0 +1,134 @@
+:root {
+    --spotify-green: #1DB954;
+    --spotify-green-hover: #1ed760;
+    --background: #121212;
+    --surface: #282828;
+    --text: #FFFFFF;
+    --text-secondary: #B3B3B3;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--spotify-green);
+    color: var(--text);
+    padding: 1rem 2rem;
+    border-radius: 500px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background: var(--spotify-green-hover);
+    transform: scale(1.02);
+}
+
+.button.secondary {
+    background: var(--surface);
+}
+
+.button.secondary:hover {
+    background: #383838;
+}
+
+.button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.generate-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--spotify-green);
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.error {
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+} 

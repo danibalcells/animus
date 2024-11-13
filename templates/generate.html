@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Playlist - Animus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Your Playlist</h1>
+        <p class="subtitle">Enter a concept, feeling, or theme to create your personalized playlist</p>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+        <form method="POST" class="generate-form">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="target" 
+                    placeholder="Try 'a rainy day in Tokyo' or 'cyberpunk street race'"
+                    required
+                >
+            </div>
+            <button type="submit" class="button">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/>
+                </svg>
+                Generate Playlist
+            </button>
+        </form>
+        <div class="button-group">
+            <a href="{{ url_for('logout') }}" class="button secondary">Logout</a>
+        </div>
+    </div>
+</body>
+</html> 
