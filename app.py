@@ -23,7 +23,7 @@ if os.getenv('FLASK_ENV') != 'production':
 client_id = os.getenv('SPOTIPY_CLIENT_ID')
 client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')
 is_production = os.getenv('FLASK_ENV') == 'production'
-redirect_uri = os.getenv('REDIRECT_URI', 'http://localhost:5000/callback')
+redirect_uri = os.getenv('REDIRECT_URI', 'http://localhost:5001/callback')
 print(redirect_uri)
 
 if not client_id or not client_secret:
@@ -192,7 +192,9 @@ def generate():
             playlist_description = generate_playlist_description(target, aspects_description)
             spotify_params = generate_spotify_parameters(playlist_description)
             title, description = generate_title(target, aspects_description, playlist_description)
-            tracks, track_uris = get_recommendations(spotify_params, spotify_token)
+            tracks, track_uris = get_recommendations(spotify_params)
+            logger.debug(f'Params: {spotify_params}')
+            logger.debug(f'Tracks: {tracks}')
             
             # Add target to Spotify description but not display description
             spotify_description = f"{description} made with animus for {target}."
@@ -217,7 +219,6 @@ def generate():
     # Add random idea for GET request
     random_idea = random.choice(GENERATION_IDEAS)
     return render_template('generate.html', placeholder=random_idea)
-
 @app.route('/logout')
 def logout():
     session.clear()
@@ -230,3 +231,4 @@ if __name__ != '__main__':
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
+

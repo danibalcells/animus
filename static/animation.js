@@ -11,8 +11,8 @@ class Blob {
         };
         
         this.radius = sizes[size];
-        this.xSpeed = 0.8 - Math.random() * 1.6;
-        this.ySpeed = 0.8 - Math.random() * 1.6;
+        this.xSpeed = 2.8 - Math.random() * 1.6;
+        this.ySpeed = 2.8 - Math.random() * 1.6;
         this.phase = Math.random() * Math.PI * 2;
     }
 

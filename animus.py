@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 import logging
+import requests
 
 from langchain_anthropic import ChatAnthropic
 from langchain.prompts import PromptTemplate
@@ -80,11 +81,12 @@ def is_banned_artist(artist_uri: str) -> bool:
 def filter_banned_artists(tracks: list[dict]) -> list[dict]:
     return [track for track in tracks if not is_banned_artist(track['artists'][0]['uri'])]
 
+def get_recommendation_token() -> str:
+    url = 'https://open.spotify.com/get_access_token'
+    return requests.get(url).json()['accessToken']
 
-def get_recommendations(params: dict, spotify_token: str) -> tuple[list[dict], list[str]]:
-    if not spotify_token:
-        logger.error("No Spotify token provided")
-        return [], []
+def get_recommendations(params: dict) -> tuple[list[dict], list[str]]:
+    spotify_token = get_recommendation_token()
         
     sp = spotipy.Spotify(auth=spotify_token)
     params['limit'] = 100
@@ -109,6 +111,10 @@ def get_recommendations(params: dict, spotify_token: str) -> tuple[list[dict], l
 def create_playlist(title: str, description: str, track_uris: list[str], spotify_token: str) -> str:
     if not spotify_token:
         logger.error("No Spotify token provided")
+        return ''
+        
+    if not track_uris:
+        logger.error("No track URIs provided")
         return ''
         
     sp = spotipy.Spotify(auth=spotify_token)
